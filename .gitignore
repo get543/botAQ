@@ -1,0 +1,4 @@
+.env
+node_modules
+server.js
+botaq_bot.txt
