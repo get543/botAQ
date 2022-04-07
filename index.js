@@ -1,17 +1,23 @@
 const { Telegraf } = require('telegraf');
-const express = require('express');
 require('dotenv').config();
 
-const app = express();
-const port = 3000;
-app.get('/', (req, res) => {
-    res.send('<h1>Hai</h1>');
+// keepAlive function
+const express = require('express');
+const server = express();
+
+server.all(`/`, (req, res) => {
+    res.send(`Result: [OK].`);
 });
 
-app.listen(port, () => {
-    console.log(`Listening on port ${port}`);
-});
+function keepAlive() {
+    server.listen(3000, () => {
+        console.log(`Server is now ready! | ` + Date.now());
+    });
+}
 
+module.exports = keepAlive;
+
+// Bot Start
 const bot = new Telegraf(process.env.BOT_TOKEN);
 
 bot.command('start', ctx => {
@@ -119,3 +125,5 @@ bot.launch(console.log('BotAQ activated!'));
 
 process.once('SIGINT', () => bot.stop('SIGINT'));
 process.once('SIGTERM', () => bot.stop('SIGTERM'));
+
+keepAlive();
